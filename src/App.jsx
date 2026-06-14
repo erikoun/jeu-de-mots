@@ -1174,7 +1174,7 @@ function Carnet({ ch, onBack }) {
   useEffect(() => {
     (async () => {
       try {
-        const result = await window.storage.get(storageKey);
+        const result = await localStorage.get(storageKey);
         if (result && result.value) {
           setAcquis(new Set(JSON.parse(result.value)));
         }
@@ -1193,7 +1193,7 @@ function Carnet({ ch, onBack }) {
         n.add(mot);
       }
       // Sauvegarder
-      window.storage.set(storageKey, JSON.stringify([...n])).catch(() => {});
+      localStorage.set(storageKey, JSON.stringify([...n])).catch(() => {});
       return n;
     });
   };
@@ -1323,7 +1323,7 @@ function TableDesMatieres({ onSelect }) {
       const c = {};
       for (const ch of CH) {
         try {
-          const r = await window.storage.get(`a_revoir:${ch.id}`);
+          const r = await localStorage.get(`a_revoir:${ch.id}`);
           if (r && r.value) c[ch.id] = JSON.parse(r.value).length;
           else c[ch.id] = 0;
         } catch (_) { c[ch.id] = 0; }
@@ -1337,7 +1337,7 @@ function TableDesMatieres({ onSelect }) {
     const data = {};
     for (const ch of CH) {
       try {
-        const r = await window.storage.get(`a_revoir:${ch.id}`);
+        const r = await localStorage.get(`a_revoir:${ch.id}`);
         if (r && r.value) data[ch.id] = JSON.parse(r.value);
       } catch (_) {}
     }
@@ -1355,7 +1355,7 @@ function TableDesMatieres({ onSelect }) {
     try {
       const data = JSON.parse(txt);
       for (const [id, mots] of Object.entries(data)) {
-        await window.storage.set(`a_revoir:${id}`, JSON.stringify(mots));
+        await localStorage.set(`a_revoir:${id}`, JSON.stringify(mots));
       }
       setMsgExport("✓ Points rouges restaurés ! Rechargez la page.");
       setTimeout(() => setMsgExport(""), 4000);
